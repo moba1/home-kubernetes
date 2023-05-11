@@ -8,3 +8,12 @@
     name: microk8s
     classic: true
   become: true
+
+- name: add `{{ k8s_admin }}` user to `microk8s` group
+  user:
+    name: "{{ k8s_admin }}"
+    append: true
+    groups: microk8s
+  become: true
+- name: reset connection for group reflection
+  meta: reset_connection
