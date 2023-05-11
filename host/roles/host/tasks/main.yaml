@@ -17,3 +17,10 @@
   become: true
 - name: reset connection for group reflection
   meta: reset_connection
+
+- name: wait microk8s status
+  command:
+    cmd: /snap/bin/microk8s status --wait-ready
+- name: turn on dashboard addon
+  shell: |
+    /snap/bin/microk8s enable dns dashboard
