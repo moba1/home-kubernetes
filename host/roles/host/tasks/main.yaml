@@ -1,0 +1,10 @@
+---
+- name: install snap
+  package:
+    name: snapd
+  become: true
+- name: install microk8s
+  snap:
+    name: microk8s
+    classic: true
+  become: true
