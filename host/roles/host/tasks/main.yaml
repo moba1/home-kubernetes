@@ -24,3 +24,6 @@
 - name: turn on dashboard addon
   shell: |
     /snap/bin/microk8s enable dns dashboard
+- name: turn on ingress addon
+  shell: |
+    /snap/bin/microk8s enable ingress
