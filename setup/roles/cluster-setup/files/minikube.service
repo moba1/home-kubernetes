@@ -1,0 +1,14 @@
+[Unit]
+Description=Minikube cluster
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/minikube start --driver=kvm2
+RemainAfterExit=true
+ExecStop=/usr/bin/minikube stop
+StandardOutput=journal
+User=minikube
+Group=minikube
+
+[Install]
+WantedBy=multi-user.target

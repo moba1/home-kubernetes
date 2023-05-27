@@ -1,0 +1,10 @@
+---
+- name: install minikube.service
+  copy:
+    src: minikube.service
+    dest: /etc/systemd/system/
+- name: enable minikube.service
+  systemd:
+    name: minikube
+    enabled: true
+    state: started

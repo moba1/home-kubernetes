@@ -2,4 +2,5 @@
 - hosts: all
   roles:
     - host-setup
+    - cluster-setup
   become: true
