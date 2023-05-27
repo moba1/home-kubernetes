@@ -3,7 +3,7 @@ Description=Minikube cluster
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/minikube start --driver=kvm2 --container-runtime=containerd --cni=flannel
+ExecStart=/usr/bin/minikube start --driver=kvm2 --container-runtime=containerd --cni=flannel --extra-config=apiserver.authorization-mode=RBAC
 RemainAfterExit=true
 ExecStop=/usr/bin/minikube stop
 StandardOutput=journal
