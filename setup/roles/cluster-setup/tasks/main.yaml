@@ -8,3 +8,12 @@
     name: minikube
     enabled: true
     state: started
+
+- name: enable addon
+  command: minikube addons enable {{ item }}
+  loop:
+    - kubevirt
+    - ingress
+    - dashboard
+    - metallb
+  become_user: minikube
