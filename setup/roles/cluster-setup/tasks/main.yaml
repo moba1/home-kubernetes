@@ -9,6 +9,16 @@
     enabled: true
     state: started
 
+# show `The in-depth way` in Document (https://kubevirt.io/quickstart_minikube/)
+# for kubevirt
+- name: install curl
+  apt:
+    name: curl
+- name: patch kubevirt
+  shell: |
+    minikube kubectl -- apply -f "https://github.com/kubevirt/kubevirt/releases/download/$(curl -s https://api.github.com/repos/kubevirt/kubevirt/releases | grep tag_name | grep -v -- '-rc' | sort -r | head -1 | awk -F': ' '{print $2}' | sed 's/,//' | xargs)/kubevirt-operator.yaml"
+  become_user: minikube
+
 - name: enable addon
   command: minikube addons enable {{ item }}
   loop:
