@@ -1,29 +1,24 @@
 ---
-- name: install snap
-  package:
-    name: snapd
-  become: true
-- name: install microk8s
-  snap:
-    name: microk8s
-    classic: true
-  become: true
+- name: install minikube
+  apt:
+    deb: https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+- name: install kvm packages
+  apt:
+    name: "{{ item }}"
+  loop:
+    - qemu-kvm
+    - libvirt-daemon-system
+    - libvirt-clients
+    - bridge-utils
 
-- name: add `{{ k8s_admin }}` user to `microk8s` group
+- name: add minikube group
+  group:
+    name: minikube
+- name: add minikube user
   user:
-    name: "{{ k8s_admin }}"
-    append: true
-    groups: microk8s
-  become: true
-- name: reset connection for group reflection
-  meta: reset_connection
+    name: minikube
+    group: minikube
+    groups:
+      - libvirt
+      - kvm
 
-- name: wait microk8s status
-  command:
-    cmd: /snap/bin/microk8s status --wait-ready
-- name: turn on dashboard addon
-  shell: |
-    /snap/bin/microk8s enable dns dashboard
-- name: turn on ingress addon
-  shell: |
-    /snap/bin/microk8s enable ingress
