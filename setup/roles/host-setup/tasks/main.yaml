@@ -1,7 +1,14 @@
 ---
-- name: install minikube
-  apt:
-    deb: https://storage.googleapis.com/minikube/releases/latest/minikube_latest_amd64.deb
+- name: get k0s
+  uri:
+    url: https://get.k0s.sh
+    return_content: yes
+  register: k0s_install
+- name: install k0s
+  shell:
+    cmd: sh
+    stdin: "{{ k0s_install.content }}"
+
 - name: install kvm packages
   apt:
     name: "{{ item }}"
@@ -10,15 +17,8 @@
     - libvirt-daemon-system
     - libvirt-clients
     - bridge-utils
-
-- name: add minikube group
-  group:
-    name: minikube
-- name: add minikube user
-  user:
-    name: minikube
-    group: minikube
-    groups:
-      - libvirt
-      - kvm
-
+- name: enable libvirtd
+  systemd:
+    name: libvirtd
+    enabled: true
+    state: started
