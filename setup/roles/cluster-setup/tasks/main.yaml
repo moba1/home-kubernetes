@@ -3,6 +3,7 @@
   stat:
     path: /etc/systemd/system/k0scontroller.service
   register: installed_controller
+  changed_when: false
 - name: install k0s controller
   shell: |
     k0s install controller --single
@@ -12,6 +13,7 @@
   shell: |
     k0s status
   register: started_k0s
+  changed_when: false
 - name: start k0s
   shell: |
     k0s start

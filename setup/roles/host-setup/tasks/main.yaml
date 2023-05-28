@@ -3,6 +3,7 @@
   shell: |
     which k0s
   register: installed_k0s
+  changed_when: false
 - name: get k0s
   uri:
     url: https://get.k0s.sh

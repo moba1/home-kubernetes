@@ -3,6 +3,7 @@
   shell: |
     curl -s https://api.github.com/repos/kubevirt/kubevirt/releases | grep tag_name | grep -v -- '-rc' | sort -r | head -1 | awk -F': ' '{print $2}' | sed 's/,//' | xargs
   register: version
+  changed_when: false
 
 - name: install kubevirt operator {{ version.stdout }}
   shell: |
