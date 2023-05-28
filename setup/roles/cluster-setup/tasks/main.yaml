@@ -18,3 +18,5 @@
   shell: |
     k0s start
   when: started_k0s.failed
+
+- import_tasks: modules/kubevirt.yaml

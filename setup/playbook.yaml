@@ -3,5 +3,4 @@
   roles:
     - host-setup
     - cluster-setup
-    - kubevirt-setup
   become: true
