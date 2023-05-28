@@ -1,13 +1,19 @@
 ---
+- name: check k0s installed
+  shell: |
+    which k0s
+  register: installed_k0s
 - name: get k0s
   uri:
     url: https://get.k0s.sh
     return_content: yes
   register: k0s_install
+  when: installed_k0s.failed
 - name: install k0s
   shell:
     cmd: sh
     stdin: "{{ k0s_install.content }}"
+  when: installed_k0s.failed
 
 - name: install kvm packages
   apt:

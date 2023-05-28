@@ -1,7 +1,18 @@
 ---
+- name: check installed controller
+  stat:
+    path: /etc/systemd/system/k0scontroller.service
+  register: installed_controller
 - name: install k0s controller
   shell: |
     k0s install controller --single
+  when: not installed_controller.stat.exists
+
+- name: check k0s started
+  shell: |
+    k0s status
+  register: started_k0s
 - name: start k0s
   shell: |
     k0s start
+  when: started_k0s.failed
