@@ -5,9 +5,21 @@
   register: version
   changed_when: false
 
+- name: check kubevirt operator installed
+  shell: |
+    k0s kubectl describe -f https://github.com/kubevirt/kubevirt/releases/download/{{ version.stdout }}/kubevirt-operator.yaml
+  register: installed_operator
+  changed_when: false
 - name: install kubevirt operator {{ version.stdout }}
   shell: |
     k0s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ version.stdout }}/kubevirt-operator.yaml
+  when: installed_operator.failed
+- name: check kubevirt CRDs installed
+  shell: |
+    k0s kubectl describe -f https://github.com/kubevirt/kubevirt/releases/download/{{ version.stdout }}/kubevirt-cr.yaml
+  register: installed_crds
+  changed_when: false
 - name: install kubevirt CRDs {{ version.stdout }}
   shell: |
     k0s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ version.stdout }}/kubevirt-cr.yaml
+  when: installed_crds.failed
