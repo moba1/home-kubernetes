@@ -1,0 +1,12 @@
+---
+- name: fetch version
+  shell: |
+    curl -s https://api.github.com/repos/kubevirt/kubevirt/releases | grep tag_name | grep -v -- '-rc' | sort -r | head -1 | awk -F': ' '{print $2}' | sed 's/,//' | xargs
+  register: version
+
+- name: install kubevirt operator {{ version.stdout }}
+  shell: |
+    k0s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ version.stdout }}/kubevirt-operator.yaml
+- name: install kubevirt CRDs {{ version.stdout }}
+  shell: |
+    k0s kubectl apply -f https://github.com/kubevirt/kubevirt/releases/download/{{ version.stdout }}/kubevirt-cr.yaml
